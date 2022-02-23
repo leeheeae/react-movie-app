@@ -1,49 +1,15 @@
-import { useEffect, useState } from 'react';
-import Movie from './Movie';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Detail from './routes/Detail';
+import Home from './routes/Home';
 
 function App() {
-  //useState
-  const [loading, setLoading] = useState(true);
-  const [movies, setMovies] = useState([]);
-
-  //fnc
-  const getMovies = async () => {
-    try {
-      const response = await fetch(
-        `https://yts.mx/api/v2/list_movies.json?minimum_rating=8.8&sort_by=year`
-      );
-      const json = await response.json();
-      setMovies(json.data.movies);
-      setLoading(false);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  //useEffect
-  useEffect(() => {
-    getMovies();
-  }, []);
-
-  //start
   return (
-    <div>
-      {loading ? (
-        <h1>Loading ...</h1>
-      ) : (
-        <div>
-          {movies.map((movie) => (
-            <Movie
-              key={movie.id}
-              coverImg={movie.medium_cover_image}
-              title={movie.title}
-              summary={movie.summary}
-              genres={movie.genres}
-            />
-          ))}
-        </div>
-      )}
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />}></Route>
+        <Route path="/movie" element={<Detail />}></Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
